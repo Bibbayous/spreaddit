@@ -133,12 +133,14 @@ export function PreviewDemo() {
   const showLowQualityPosts = filterValue < 50;
   const showHighQualityPosts = filterValue >= 30;
   
-  // Update filter value on slider drag
+  // Update filter value on slider track click
   const handleSliderChange = (e: React.MouseEvent<HTMLDivElement>) => {
     const sliderTrack = e.currentTarget;
     const rect = sliderTrack.getBoundingClientRect();
     const position = e.clientX - rect.left;
-    const percentage = Math.min(Math.max((position / rect.width) * 100, 0), 100);
+    const maxWidth = rect.width - 24; // Account for thumb width
+    const boundedPosition = Math.min(Math.max(position, 0), maxWidth);
+    const percentage = Math.min(Math.max((boundedPosition / maxWidth) * 100, 0), 100);
     setFilterValue(percentage);
   };
 
@@ -177,23 +179,29 @@ export function PreviewDemo() {
               <div className="flex items-center">
                 <span className="mr-2 text-sm opacity-70">Low</span>
                 <div 
-                  className="w-40 h-6 bg-gray-200 rounded-full p-1 flex cursor-pointer"
+                  className="w-40 h-6 bg-gray-200 rounded-full p-1 relative cursor-pointer"
                   onClick={handleSliderChange}
                 >
-                  <motion.div 
-                    className="w-6 h-4 bg-[#FF4500] rounded-full cursor-grab active:cursor-grabbing" 
-                    style={{ translateX: filterValue / 100 * 125 }}
-                    animate={{ x: filterValue / 100 * 125 }}
-                    transition={{ duration: 0.3 }}
-                    drag="x"
-                    dragConstraints={{ left: 0, right: 125 }}
-                    dragElastic={0}
-                    dragMomentum={false}
-                    onDrag={(e, info) => {
-                      const newValue = Math.min(Math.max((info.point.x / 125) * 100, 0), 100);
-                      setFilterValue(newValue);
-                    }}
-                  ></motion.div>
+                  <div className="w-full h-full relative overflow-hidden">
+                    <motion.div 
+                      className="absolute w-6 h-4 bg-[#FF4500] rounded-full cursor-grab active:cursor-grabbing" 
+                      style={{ left: 0 }}
+                      animate={{ 
+                        x: Math.min(filterValue / 100 * (160 - 24), 160 - 24) // 160px width - 24px thumb width
+                      }}
+                      transition={{ duration: 0.3 }}
+                      drag="x"
+                      dragConstraints={{ left: 0, right: 160 - 24 }}
+                      dragElastic={0}
+                      dragMomentum={false}
+                      onDrag={(e, info) => {
+                        const maxX = 160 - 24; // 160px width - 24px thumb width
+                        const boundedX = Math.min(Math.max(info.point.x, 0), maxX);
+                        const newValue = Math.min(Math.max((boundedX / maxX) * 100, 0), 100);
+                        setFilterValue(newValue);
+                      }}
+                    ></motion.div>
+                  </div>
                 </div>
                 <span className="ml-2 text-sm opacity-70">High</span>
               </div>
