@@ -15,7 +15,7 @@ export function Navbar() {
           <svg className="w-8 h-8 md:w-10 md:h-10 text-[#FF4500]" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path>
           </svg>
-          <span className="ml-2 text-xl md:text-2xl font-bold">Spread<span className="text-[#FF4500]">it</span></span>
+          <span className="ml-2 text-xl md:text-2xl font-bold"><span className="text-black">Spread</span><span className="text-[#FF4500]">dit</span></span>
         </div>
         
         <div className="hidden md:flex space-x-6 items-center">

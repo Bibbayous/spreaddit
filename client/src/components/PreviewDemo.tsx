@@ -26,7 +26,7 @@ const ContentCard = ({
 }: ContentCardProps) => {
   return (
     <motion.div 
-      className={`p-4 border border-gray-100 rounded-lg shadow-sm hover:shadow-[0_4px_14px_0_rgba(0,0,0,0.08)] transition-all duration-300 ${isLowQuality ? 'opacity-50 hover:opacity-100' : ''}`}
+      className="p-4 border border-gray-100 rounded-lg shadow-sm hover:shadow-[0_4px_14px_0_rgba(0,0,0,0.08)] transition-all duration-300"
       whileHover={{ y: -5, transition: { duration: 0.3 } }}
     >
       <div className="flex items-start">
@@ -129,18 +129,16 @@ export function PreviewDemo() {
     }
   ];
 
-  // Determine which posts to show based on filter value
-  const showLowQualityPosts = filterValue < 50;
-  const showHighQualityPosts = filterValue >= 30;
+  // Determine which posts to show based on filter value (now binary)
+  const showLowQualityPosts = filterValue === 0;
+  const showHighQualityPosts = filterValue === 100;
   
-  // Update filter value on slider track click
+  // Update filter value on slider track click - only two options: low or high
   const handleSliderChange = (e: React.MouseEvent<HTMLDivElement>) => {
     const sliderTrack = e.currentTarget;
     const rect = sliderTrack.getBoundingClientRect();
     const position = e.clientX - rect.left;
-    const maxWidth = rect.width - 24; // Account for thumb width
-    const boundedPosition = Math.min(Math.max(position, 0), maxWidth);
-    const percentage = Math.min(Math.max((boundedPosition / maxWidth) * 100, 0), 100);
+    const percentage = position / rect.width > 0.5 ? 100 : 0; // Only 0 or 100
     setFilterValue(percentage);
   };
 
@@ -148,7 +146,7 @@ export function PreviewDemo() {
     <section id="features" className="py-16 md:py-24">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">How Spreadit Works</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">How <span className="text-black">Spread</span><span className="text-[#FF4500]">dit</span> Works</h2>
           <p className="text-lg md:text-xl max-w-3xl mx-auto opacity-80">
             Our AI analyzes millions of Reddit posts to surface high-quality content and filter out the noise.
           </p>
@@ -162,7 +160,7 @@ export function PreviewDemo() {
               <div className="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
               <div className="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
               <div className="flex-1 text-center">
-                <span className="font-medium">Spreadit AI Enhancement</span>
+                <span className="font-medium"><span className="text-black">Spread</span><span className="text-[#FF4500]">dit</span> AI Enhancement</span>
               </div>
             </div>
           </div>
@@ -197,7 +195,8 @@ export function PreviewDemo() {
                       onDrag={(e, info) => {
                         const maxX = 160 - 24; // 160px width - 24px thumb width
                         const boundedX = Math.min(Math.max(info.point.x, 0), maxX);
-                        const newValue = Math.min(Math.max((boundedX / maxX) * 100, 0), 100);
+                        // Binary choice: either 0 or 100 based on position
+                        const newValue = boundedX / maxX > 0.5 ? 100 : 0;
                         setFilterValue(newValue);
                       }}
                     ></motion.div>
