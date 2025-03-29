@@ -46,23 +46,12 @@ export function Hero({ onJoinWaitlist }: HeroProps) {
         <p className="text-xl md:text-2xl mb-10 opacity-90 max-w-3xl mx-auto">
           Surface high-quality, diverse discussions and never see repetitive content again. Our AI technology enhances your Reddit experience.
         </p>
-        <button 
-          onClick={onJoinWaitlist || (() => {
-            // Fallback behavior if onJoinWaitlist is not provided
-            const element = document.getElementById('join-waitlist');
-            if (element) {
-              element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            } else {
-              window.scrollTo({
-                top: document.body.scrollHeight,
-                behavior: 'smooth'
-              });
-            }
-          })}
+        <a 
+          href="#join-waitlist"
           className="inline-block bg-[#FF4500] text-white px-8 py-4 rounded-md text-lg font-medium hover:bg-opacity-90 transition-all hover:shadow-[0_0_15px_rgba(255,69,0,0.5)]"
         >
           Join the Waitlist
-        </button>
+        </a>
       </div>
       
       {/* Floating elements/bubbles */}

@@ -78,6 +78,70 @@ const ContentCard = ({
 export function PreviewDemo() {
   const [filterValue, setFilterValue] = useState(80); // 0-100 scale for filter slider
 
+  // Sample data for high and low quality posts
+  const highQualityPosts = [
+    {
+      voteCount: 426,
+      qualityLabel: "High Quality",
+      qualityColor: "green",
+      username: "innovator_42",
+      timePosted: "3 hours ago",
+      title: "Comprehensive review of AI tools for content creation in 2023",
+      content: "I've tested 15 different AI writing tools over the past 3 months and compiled my results into this detailed comparison. Includes pricing, features, quality analysis, and use cases...",
+      commentCount: 168,
+      isLowQuality: false
+    },
+    {
+      voteCount: 327,
+      qualityLabel: "High Quality",
+      qualityColor: "green",
+      username: "tech_enthusiast",
+      timePosted: "6 hours ago",
+      title: "How I built a custom search engine to find undervalued products",
+      content: "I developed a Python tool that scrapes multiple marketplaces and identifies pricing discrepancies. Here's my methodology, code snippets, and results after 3 months...",
+      commentCount: 134,
+      isLowQuality: false
+    }
+  ];
+  
+  const lowQualityPosts = [
+    {
+      voteCount: 12,
+      qualityLabel: "Low Quality",
+      qualityColor: "yellow",
+      username: "randomuser123",
+      timePosted: "4 hours ago",
+      title: "Has anyone seen this movie?",
+      content: "I forgot the name of this movie I watched a few years ago. It had actors in it and there was a scene with something happening. Thanks!",
+      commentCount: 3,
+      isLowQuality: true
+    },
+    {
+      voteCount: 8,
+      qualityLabel: "Low Quality", 
+      qualityColor: "yellow",
+      username: "justjoined2022",
+      timePosted: "5 hours ago",
+      title: "Question about computers",
+      content: "My computer is making a weird noise. Has anyone else experienced this? Not sure what else to say but the noise is annoying...",
+      commentCount: 2,
+      isLowQuality: true
+    }
+  ];
+
+  // Determine which posts to show based on filter value
+  const showLowQualityPosts = filterValue < 50;
+  const showHighQualityPosts = filterValue >= 30;
+  
+  // Update filter value on slider drag
+  const handleSliderChange = (e: React.MouseEvent<HTMLDivElement>) => {
+    const sliderTrack = e.currentTarget;
+    const rect = sliderTrack.getBoundingClientRect();
+    const position = e.clientX - rect.left;
+    const percentage = Math.min(Math.max((position / rect.width) * 100, 0), 100);
+    setFilterValue(percentage);
+  };
+
   return (
     <section id="features" className="py-16 md:py-24">
       <div className="container mx-auto px-6">
@@ -112,12 +176,23 @@ export function PreviewDemo() {
               </div>
               <div className="flex items-center">
                 <span className="mr-2 text-sm opacity-70">Low</span>
-                <div className="w-40 h-6 bg-gray-200 rounded-full p-1 flex">
+                <div 
+                  className="w-40 h-6 bg-gray-200 rounded-full p-1 flex cursor-pointer"
+                  onClick={handleSliderChange}
+                >
                   <motion.div 
-                    className="w-6 h-4 bg-[#FF4500] rounded-full" 
+                    className="w-6 h-4 bg-[#FF4500] rounded-full cursor-grab active:cursor-grabbing" 
                     style={{ translateX: filterValue / 100 * 125 }}
                     animate={{ x: filterValue / 100 * 125 }}
                     transition={{ duration: 0.3 }}
+                    drag="x"
+                    dragConstraints={{ left: 0, right: 125 }}
+                    dragElastic={0}
+                    dragMomentum={false}
+                    onDrag={(e, info) => {
+                      const newValue = Math.min(Math.max((info.point.x / 125) * 100, 0), 100);
+                      setFilterValue(newValue);
+                    }}
                   ></motion.div>
                 </div>
                 <span className="ml-2 text-sm opacity-70">High</span>
@@ -126,39 +201,41 @@ export function PreviewDemo() {
             
             {/* Content Cards */}
             <div className="space-y-4">
-              <ContentCard 
-                voteCount={426}
-                qualityLabel="High Quality"
-                qualityColor="green"
-                username="innovator_42"
-                timePosted="3 hours ago"
-                title="Comprehensive review of AI tools for content creation in 2023"
-                content="I've tested 15 different AI writing tools over the past 3 months and compiled my results into this detailed comparison. Includes pricing, features, quality analysis, and use cases..."
-                commentCount={168}
-              />
+              {showHighQualityPosts && highQualityPosts.map((post, index) => (
+                <ContentCard 
+                  key={`high-${index}`}
+                  voteCount={post.voteCount}
+                  qualityLabel={post.qualityLabel}
+                  qualityColor={post.qualityColor}
+                  username={post.username}
+                  timePosted={post.timePosted}
+                  title={post.title}
+                  content={post.content}
+                  commentCount={post.commentCount}
+                  isLowQuality={post.isLowQuality}
+                />
+              ))}
               
-              <ContentCard 
-                voteCount={327}
-                qualityLabel="High Quality"
-                qualityColor="green"
-                username="tech_enthusiast"
-                timePosted="6 hours ago"
-                title="How I built a custom search engine to find undervalued products"
-                content="I developed a Python tool that scrapes multiple marketplaces and identifies pricing discrepancies. Here's my methodology, code snippets, and results after 3 months..."
-                commentCount={134}
-              />
+              {showLowQualityPosts && lowQualityPosts.map((post, index) => (
+                <ContentCard 
+                  key={`low-${index}`}
+                  voteCount={post.voteCount}
+                  qualityLabel={post.qualityLabel}
+                  qualityColor={post.qualityColor}
+                  username={post.username}
+                  timePosted={post.timePosted}
+                  title={post.title}
+                  content={post.content}
+                  commentCount={post.commentCount}
+                  isLowQuality={post.isLowQuality}
+                />
+              ))}
               
-              <ContentCard 
-                voteCount={12}
-                qualityLabel="Low Quality"
-                qualityColor="yellow"
-                username="randomuser123"
-                timePosted="4 hours ago"
-                title="Has anyone seen this movie?"
-                content="I forgot the name of this movie I watched a few years ago. It had actors in it and there was a scene with something happening. Thanks!"
-                commentCount={3}
-                isLowQuality={true}
-              />
+              {!showHighQualityPosts && !showLowQualityPosts && (
+                <div className="p-6 text-center text-gray-500">
+                  No content matches your current filter settings.
+                </div>
+              )}
             </div>
             
             <div className="mt-6 flex items-center justify-center opacity-70">
