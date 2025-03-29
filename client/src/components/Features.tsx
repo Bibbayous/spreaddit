@@ -16,13 +16,25 @@ const FeatureCard = ({ icon, title, description, iconBgColor, iconColor, delay, 
   
   return (
     <motion.div 
-      className={`bg-white rounded-xl shadow-[0_4px_14px_0_rgba(0,0,0,0.08)] p-6 transition-all duration-300 z-10 ${isHovering ? 'shadow-[0_8px_30px_rgba(0,0,0,0.15)] scale-110' : 'hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)]'}`}
+      className={`bg-white rounded-xl shadow-[0_4px_14px_0_rgba(0,0,0,0.08)] p-6 z-10 ${isHovering ? 'shadow-[0_8px_30px_rgba(0,0,0,0.15)]' : 'hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)]'}`}
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5, delay }}
+      animate={{ 
+        scale: isHovering ? 1.1 : 1
+      }}
+      style={{ 
+        transformOrigin: 'center center',
+        position: 'relative',
+        zIndex: isHovering ? 20 : 10
+      }}
       onHoverStart={() => setIsHovering(true)}
       onHoverEnd={() => setIsHovering(false)}
+      transition={{
+        duration: 0.5,
+        delay: delay,
+        scale: { duration: 0.3, ease: "easeOut" }
+      }}
     >
       <div className={`w-12 h-12 ${iconBgColor} rounded-full flex items-center justify-center mb-4`}>
         <div className={iconColor}>{icon}</div>
