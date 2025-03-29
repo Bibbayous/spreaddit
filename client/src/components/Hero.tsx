@@ -45,7 +45,16 @@ export function Hero() {
         <button 
           onClick={() => {
             const element = document.getElementById('join-waitlist');
-            element?.scrollIntoView({ behavior: 'smooth' });
+            if (element) {
+              element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+              console.error("Could not find element with id 'join-waitlist'");
+              // Fallback - scroll to bottom of page
+              window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+              });
+            }
           }}
           className="inline-block bg-[#FF4500] text-white px-8 py-4 rounded-md text-lg font-medium hover:bg-opacity-90 transition-all hover:shadow-[0_0_15px_rgba(255,69,0,0.5)]"
         >
