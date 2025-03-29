@@ -124,7 +124,7 @@ export function WaitlistForm({ showPrivacyPolicy }: WaitlistFormProps) {
                           >
                             Privacy Policy
                           </button>{" "}
-                          and consent to receiving emails about RedditEnhanceAI.
+                          and consent to receiving emails about Spreadit.
                         </FormLabel>
                         <FormMessage />
                       </div>
@@ -155,7 +155,7 @@ export function WaitlistForm({ showPrivacyPolicy }: WaitlistFormProps) {
                 <div className="ml-3">
                   <h3 className="text-sm font-medium text-green-800">Success!</h3>
                   <div className="mt-2 text-sm text-green-700">
-                    <p>You've been added to our waitlist. We'll notify you when RedditEnhanceAI is ready to launch.</p>
+                    <p>You've been added to our waitlist. We'll notify you when Spreadit is ready to launch.</p>
                   </div>
                 </div>
               </div>
