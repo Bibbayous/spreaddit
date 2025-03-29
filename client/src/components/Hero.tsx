@@ -31,7 +31,11 @@ const Bubble = ({ top, left, right, bottom, delay, duration, color, icon }: Bubb
   );
 };
 
-export function Hero() {
+interface HeroProps {
+  onJoinWaitlist?: () => void;
+}
+
+export function Hero({ onJoinWaitlist }: HeroProps) {
   return (
     <div className="container mx-auto px-6 pt-16 md:pt-24 relative z-10">
       <div className="max-w-4xl mx-auto text-center">
@@ -43,19 +47,18 @@ export function Hero() {
           Surface high-quality, diverse discussions and never see repetitive content again. Our AI technology enhances your Reddit experience.
         </p>
         <button 
-          onClick={() => {
+          onClick={onJoinWaitlist || (() => {
+            // Fallback behavior if onJoinWaitlist is not provided
             const element = document.getElementById('join-waitlist');
             if (element) {
               element.scrollIntoView({ behavior: 'smooth', block: 'start' });
             } else {
-              console.error("Could not find element with id 'join-waitlist'");
-              // Fallback - scroll to bottom of page
               window.scrollTo({
                 top: document.body.scrollHeight,
                 behavior: 'smooth'
               });
             }
-          }}
+          })}
           className="inline-block bg-[#FF4500] text-white px-8 py-4 rounded-md text-lg font-medium hover:bg-opacity-90 transition-all hover:shadow-[0_0_15px_rgba(255,69,0,0.5)]"
         >
           Join the Waitlist
