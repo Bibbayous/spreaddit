@@ -1,6 +1,18 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 
+interface ContentCardProps {
+  voteCount: number;
+  qualityLabel: string;
+  qualityColor: string;
+  username: string;
+  timePosted: string;
+  title: string;
+  content: string;
+  commentCount: number;
+  isLowQuality?: boolean;
+}
+
 const ContentCard = ({ 
   voteCount, 
   qualityLabel, 
@@ -11,7 +23,7 @@ const ContentCard = ({
   content, 
   commentCount, 
   isLowQuality = false
-}) => {
+}: ContentCardProps) => {
   return (
     <motion.div 
       className={`p-4 border border-gray-100 rounded-lg shadow-sm hover:shadow-[0_4px_14px_0_rgba(0,0,0,0.08)] transition-all duration-300 ${isLowQuality ? 'opacity-50 hover:opacity-100' : ''}`}
@@ -70,7 +82,7 @@ export function PreviewDemo() {
     <section id="features" className="py-16 md:py-24">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">How RedditEnhanceAI Works</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">How Spreadit Works</h2>
           <p className="text-lg md:text-xl max-w-3xl mx-auto opacity-80">
             Our AI analyzes millions of Reddit posts to surface high-quality content and filter out the noise.
           </p>
@@ -84,7 +96,7 @@ export function PreviewDemo() {
               <div className="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
               <div className="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
               <div className="flex-1 text-center">
-                <span className="font-medium">Reddit with AI Enhancement</span>
+                <span className="font-medium">Spreadit AI Enhancement</span>
               </div>
             </div>
           </div>

@@ -42,12 +42,15 @@ export function Hero() {
         <p className="text-xl md:text-2xl mb-10 opacity-90 max-w-3xl mx-auto">
           Surface high-quality, diverse discussions and never see repetitive content again. Our AI technology enhances your Reddit experience.
         </p>
-        <a 
-          href="#join-waitlist" 
+        <button 
+          onClick={() => {
+            const element = document.getElementById('join-waitlist');
+            element?.scrollIntoView({ behavior: 'smooth' });
+          }}
           className="inline-block bg-[#FF4500] text-white px-8 py-4 rounded-md text-lg font-medium hover:bg-opacity-90 transition-all hover:shadow-[0_0_15px_rgba(255,69,0,0.5)]"
         >
           Join the Waitlist
-        </a>
+        </button>
       </div>
       
       {/* Floating elements/bubbles */}
